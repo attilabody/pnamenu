@@ -1,0 +1,194 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>PNAMenu</title>
+<style type="text/css">
+body {
+	background-color: #fff;
+	color:		#000;
+	font-family:	"Liberation Sans", Tahoma, Helvetica, sans-serif;
+	font-size:	10pt;
+	font-weight:	normal;
+	margin:		1em;
+}
+a {
+	border-width:	none;
+	background-color:	transparent;
+	color: 		#369;
+	text-decoration: 	underline;
+}
+a:hover {
+	background-color: #FFFF80;
+	color:		#00f;
+	text-decoration:	none;
+}
+img {
+	border-style:	none;
+}
+
+div.examples {
+	background-color:	#f8f8f8;
+	border: 		2px solid #808080;
+	color:		#000;
+	margin:		0em 1em;
+	padding:		0em;
+}
+
+p {
+    margin:     0.5em 1em;
+    padding:    0px;
+}
+
+.examples {
+    margin:     0.5em 1em;
+    padding:    0px;
+}
+
+pre.examples {
+	background-color:	#ffffd0;
+	border: 		2px solid #808080;
+	color:		#000;
+	margin:	         0em 1em;
+	padding:		1em;
+	text-align:	left;
+	font-family:	monospace;
+}
+
+</style>
+</head>
+<body>
+<h1>Navigation software selector for PNA</h1>
+<h2>1. "User's Manual"</h2>
+<h3>1.1 Why?</h3>
+<p>
+PNAs - gaining more and more popularity these days - have annoyingly limited ability to select and start their
+navigation software. Most of these equipments designed and manufactured by the Chinese Yuan Feng LTD, thus
+their firmware is very similar. Unfortunately the manufacturer designed the software of the device to be able
+to start only one navigation application even if it can do this on a reatively fast and simple way.
+</p>
+<p>
+Two devices I own (BluePanther Diamond and Wayteq x820) uses almost the same logic when when the user clicks
+on the "GPS" button:
+</p>
+<p>
+On x820 it is possible to set the path of the navigation application using the settings page. If the user
+sets anyhing here, it has absolute priority.
+</p>
+<p>
+If there no navigation application path has been set (or the device - e.g. BP Diamond - does not support
+this feature) The device checks if shell.ini exists in the root of the internal flash memory (\ResidentFlash)
+then in the root of the SD card (\SDMMC). If it finds such a file it launches the application this file
+points to. If no such a file found, it ries to launch \SDMMC\MobileNavigator\MobileNavigator.exe,
+then if it still does not exists it tries \ResidentFlash\MobileNavigator\MobileNavigator.exe
+</p>
+<p>
+Even if we have several way to select which navigation software to start, we have to start the
+settings menu of the device (on the Waytew x820/x620) if we would like to start a different application than
+before, or have to edit a file or rename some direcories if the application selector feature is missing
+(BP Diamond/Zafire)
+</p>
+<p>
+A PNAMenu használatával viszont megoldható, hogy a készülék "navigáció" funkciójának aktivizálásakor egy
+rugalmasan, mégis egyszerűen konfigurálható menüből válaszhassuk ki a számunkra az adott pillanatban épp legmegfelelőbb
+programot.
+</p>
+<h3>1.2 Hogyan?</h3>
+<p>
+A PNAMenu induláskor megpróbálja megnyitni a vele egy könyvtárban elhelyezett, vele azonos nevű, csak kiterjesztésében
+eltérő (.exe helyett .ini) konfigurációs file-t. A gyakorlatban ha a programot a PNAMenu könyvtárba PNAMenu.exe néven
+másoltuk fel, akkor az ugyan itt található PNAMenu.ini-t fogja feldolgozni mint konfigurációs állományt.
+Ha azonban kénytelenek vagyunk a programot a MobileNavigator könyvtárba MobileNavigator.exe néven elhelyezni,
+akkor a konfigurációs állomány neve is MobileNavigator.ini kell legyen szintén a MobileNavigator könyvtárban.
+</p>
+<p>
+A konfigurációs állomány szerkezete viszonylag egyszerű: minden egyes sor egy másik állományra mutat,
+és tartalmazhat egy ;-vel kezdődő megjegyzést is. Ha a megadott file kiterjesztése .ini (és a file létezik),
+a PNAMenu ezt az állományt feldolgozza ezen szabályok szerint mielőtt a következő sorra lépne. Ha a kiterjesztés
+.exe, (és s file létezik), a menüben egy nyomógomb rendelődik az adott alkalmazáshoz, amit megnyomva
+a PNAMenu elindítja a programot majd azonnal ki is lép, a lehető legtöbb szabad memóriát biztosítva ezzel az
+elindított navigációs (vagy egyéb) alkalmazás számára.
+</p>
+<p>Ha egy .exe kiterjesztésű állományt meghatározó sor tartalmaz megjegyzést, a hozzá tartozó nyomógomb
+felirata ez a megjefgyzés lesz, ha nem tartalmaz, akkor a file elérési útja és neve.
+</p>
+<p>A generált menü 5 indítógombig egy oszlopot tartalmaz, efölött két oszlopba rendezi a program gombokat,
+hogy azok akár ujjal is könnyen eltalálhatóak legyenek.
+<p>
+A konfigurációs állományok lehetnek ASCII, UTF-8 vagy UCS-16 (Notepad által Unicode-ként aposztrofált)
+kódolásúak, magyar ő és ű betű viszont csak az utóbbi kettővel menthető el. Ilyen fájlok szerkesztése
+Windows alatt Notepaddel ajánlot, ez ugyanis biztosan beteszi a file elejére a kódolás automatikus
+felismeréséhez szükséges karaktereket (UCS16: 0xff 0xfe, UTF8: 0xef 0xbb 0xbf)
+</p>
+<p>
+A <a href="PNAMenu.zip">program innen</a>, a <a href="PNAMenu_src.zip">forráskód pedig innen</a> tölthető le.
+</p>
+<p>
+</p>
+<p>
+</p>
+<p>
+</p>
+<p>
+</p>
+<h2>2. Például...:</h2>
+<p>ini file az exe-vel azonos könyvtárban:</p>
+<pre class="examples">
+\ResidentFlash\iGO8.3.4.102680\iGO8.exe		;iGO8.3.4.102680 (belső)
+\ResidentFlash\iGO8.3.2.96054\iGO8.exe		;iGO8.3.2.96054 (belső)
+\ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
+\ResidentFlash\NDrive\NDrive.exe		;NDrive demo (belső)
+\ResidentFlash\Nitrogen\Nitrogen.exe		;NirtogenAudio Player
+\Windows\Explorer.exe				;Windows Explorer
+\ResidentFlash\Tools\ResInfo.exe		;Resource info
+</pre>
+<br />
+<p>
+A fenti kofigurációs állomány (feltéve, hogy a benne megadott összes exe kiterjesztésű állomány létezik)
+az alábbi menüt eredményezi:</p>
+<img class="examples" src="menu1.png"/>
+<br />
+<p>
+Az újabb eszközök (a BluePanther Diamond és Zafire valamint a Wayteq x820 és x620 egészen biztosan)
+az SD kárta tartalmát a \SDMMC könyvtár alá csatolja a kártya behelyezésekor.
+Ha kiegészítjük a fenti konfigurációs fajlt a következőképpen:</p>
+<pre class="examples">
+\SDMMC\PNAMenu.ini
+\ResidentFlash\iGO8.3.4.102680\iGO8.exe		;iGO8.3.4.102680 (belső)
+\ResidentFlash\iGO8.3.2.96054\iGO8.exe		;iGO8.3.2.96054 (belső)
+\ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
+\ResidentFlash\NDrive\NDrive.exe		;NDrive demo (belső)
+\ResidentFlash\Nitrogen\Nitrogen.exe		;NirtogenAudio Player
+\Windows\Explorer.exe				;Windows Explorer
+\ResidentFlash\Tools\ResInfo.exe		;Resource info
+</pre>
+<br/>
+<p>
+Majd az SD kártya gyökerében létrehozzuk a PNAMenu.ini állományt az alábbi tartalommal:
+</p>
+<pre class="examples">
+\SDMMC\Drive\WindowsMobile\Drive.exe		;Sygic drive 7.71 (SD kártyáról)
+</pre>
+<br />
+<p>
+Akkor amennyiben a "Drive\WindowsMobile\Drive.exe" létezik a kártyán, az SD kártya behelyezése után a menü
+a következőre módosul:
+</p>
+<img class="examples" src="menu2.png"/>
+<br />
+<p>
+Az SD kártya menüleírójára mutató sor (\SDMMC\PNAMenu.ini) természetesen akkor is benne maradhat a fő
+konfigurációs állományban, ha az SD kártyát eltávolítjuk, ilyenkor a program egyszerűen figyelmen kívül
+hagyja a nem létező állományt.
+</p>
+<p>
+Így amennyiben több SD kártyán különböző navigációs szoftverrel rendelkezünk, elég minden SD kártyánk
+főkönyvtárában elhelyezni egy PDAMenu.ini állományt a megfelelő tartalommal, és a kártya behelyezésekor
+az adott program automatikusan be fog kerülni a menübe.
+</p>
+<br />
+<h2>3. Lárifári</h2>
+<p>
+© 2009, Bódy Attila - A program szabadon használható, terjeszthető és módosítható a <a href=gplv3.txt>GPL v3</a> feltételei szerint.
+Hibajelentések, nyavajgások, a spambait[pont]hu[kukac]gmail[pont]com címre küldendők
+</p>
+<br />
+</body></html>

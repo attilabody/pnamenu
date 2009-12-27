@@ -1,0 +1,322 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>PNAMenu</title>
+<style type="text/css">
+body {
+	background-color: #fff;
+	color:		#000;
+	font-family:	"Liberation Sans", Tahoma, Helvetica, sans-serif;
+	font-size:	10pt;
+	font-weight:	normal;
+	margin:		1em;
+}
+a {
+	border-width:	none;
+	background-color:	transparent;
+	color: 		#369;
+	text-decoration: 	underline;
+}
+a:hover {
+	background-color: #FFFF80;
+	color:		#00f;
+	text-decoration:	none;
+}
+img {
+	border-style:	none;
+}
+
+div.examples {
+	background-color:	#f8f8f8;
+	border: 		2px solid #808080;
+	color:		#000;
+	margin:		0em 1em;
+	padding:		0em;
+}
+
+p {
+    margin:     0.5em 1em;
+    padding:    0px;
+}
+
+.examples {
+    margin:     0.5em 1em;
+    padding:    0px;
+}
+
+pre.examples {
+	background-color:	#ffffd0;
+	border: 		2px solid #808080;
+	color:		#000;
+	margin:	         0em 1em;
+	padding:		1em;
+	text-align:	left;
+	font-family:	monospace;
+}
+
+</style>
+</head>
+<body>
+<h1>Navigációs szotver választó menü PNA-ra</h1>
+<h2>1. Felhasználói "kézikönyv"</h2>
+<h3>1.1 Miért?</h3>
+<p>
+A manapság egyre népszerűbb PNA-k navigációs program indítási lehetőségei meglehetősen korlátozottak.
+Ezek a keszülékek az esetek jelentős részében a kínai YuanFeng Ltd termékei, így a bennük található
+firmware is igen hasonló. A gyártó azonban csak arra készítette fel a készüléket vezérlő szoftvert, hogy
+egyetlen navigációs program indítására legyen alkalmas viszonylag gyorsan és egyszerűen.
+</p>
+<p>
+Az általam elérhető két készülék (BluePanther Diamond és Wayteq x820) a következő logikát használja a
+navigációs program elindításánál:
+</p>
+<p>
+x820 esetében lehetőség van az indítandó program útvonalának meghatározására a beállításoknál. Ha itt be van
+állítva valami, az minden további lehetőséget felülbírál.
+</p>
+<p>
+Ha nincs beállítva semmi (vagy az eszköz - pl BP Diamond - nem ad lehetőséget erre) a belső
+tárolóban (\ResidentFlash) esetleg létező shell.ini nevű file-ban megadott program indul el.
+Ha ez az állomány nem létezik, az SD kártya gyökerében (\SDMMC) keresi az ugyan ilyen nevű file-t, és az ebben
+megadott programot indítja el. Ha itt sem található shell.ini, akkor megnézi létezik-e az SD kártyán a
+MobileNavigator könyvtár, és abban a MobileNavigator.exe. Ha nem, akkor ezt megpróbálja a belső tárolóval is.
+</p>
+<p>
+A fentiekből látható, hogy habár viszonylag sok lehetőségünk van az elindítandó navigációs rendszer
+kijelölésére, még a legnagyobb szabadságot megengedő újabb szoftverrel szerelt Wayteq készülákeknél sem ússzuk
+meg a barangolást a beállítások menüben ha hirtelen másik navigációs programot szeretnénk elindítani mint
+korábban.
+</p>
+<p>
+A PNAMenu használatával viszont megoldható, hogy a készülék "navigáció" funkciójának aktivizálásakor egy
+rugalmasan, mégis egyszerűen konfigurálható menüből válaszhassuk ki a számunkra az adott pillanatban épp legmegfelelőbb
+programot.
+</p>
+<h3>1.2 Hogyan?</h3>
+<p>
+A PNAMenu induláskor megpróbálja megnyitni a vele egy könyvtárban elhelyezett, vele azonos nevű, csak kiterjesztésében
+eltérő (.exe helyett .ini) konfigurációs file-t. A gyakorlatban ha a programot a PNAMenu könyvtárba PNAMenu.exe néven
+másoltuk fel, akkor az ugyan itt található PNAMenu.ini-t fogja feldolgozni mint konfigurációs állományt.
+Ha azonban kénytelenek vagyunk a programot a MobileNavigator könyvtárba MobileNavigator.exe néven elhelyezni,
+akkor a konfigurációs állomány neve is MobileNavigator.ini kell legyen szintén a MobileNavigator könyvtárban.
+</p>
+<p>
+A konfigurációs állomány szerkezete viszonylag egyszerű: minden egyes sor egy másik állományra mutat,
+és tartalmazhat egy ;-vel kezdődő megjegyzést is. Ha a megadott file kiterjesztése .ini (és a file létezik),
+a PNAMenu ezt az állományt feldolgozza ezen szabályok szerint mielőtt a következő sorra lépne. Ha a kiterjesztés
+.exe, (és s file létezik), a menüben egy nyomógomb rendelődik az adott alkalmazáshoz, amit megnyomva
+a PNAMenu elindítja a programot majd azonnal ki is lép, a lehető legtöbb szabad memóriát biztosítva ezzel az
+elindított navigációs (vagy egyéb) alkalmazás számára.
+</p>
+<p>Ha egy .exe kiterjesztésű állományt meghatározó sor tartalmaz megjegyzést, a hozzá tartozó nyomógomb
+felirata ez a megjefgyzés lesz, ha nem tartalmaz, akkor a file elérési útja és neve.
+</p>
+<p>A generált menü 5 indítógombig egy oszlopot tartalmaz, efölött két oszlopba rendezi a program gombokat,
+hogy azok akár ujjal is könnyen eltalálhatóak legyenek.
+<p>
+A konfigurációs állományok lehetnek ASCII, UTF-8 vagy UCS-16 (Notepad által Unicode-ként aposztrofált)
+kódolásúak, magyar ő és ű betű viszont csak az utóbbi kettővel menthető el. Ilyen fájlok szerkesztése
+Windows alatt Notepaddel ajánlot, ez ugyanis biztosan beteszi a file elejére a kódolás automatikus
+felismeréséhez szükséges karaktereket (UCS16: 0xff 0xfe, UTF8: 0xef 0xbb 0xbf)
+</p>
+<p>
+A <a href="PNAMenu.zip">program innen</a>, a <a href="PNAMenu_src.zip">forráskód pedig innen</a> tölthető le.
+</p>
+<h3>1.3 Például...</h3>
+<p>ini file az exe-vel azonos könyvtárban:</p>
+<pre class="examples">
+\ResidentFlash\iGO8.3.4.102680\iGO8.exe		;iGO8.3.4.102680 (belső)
+\ResidentFlash\iGO8.3.2.96054\iGO8.exe		;iGO8.3.2.96054 (belső)
+\ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
+\ResidentFlash\NDrive\NDrive.exe		;NDrive demo (belső)
+\ResidentFlash\Nitrogen\Nitrogen.exe		;NirtogenAudio Player
+\Windows\Explorer.exe				;Windows Explorer
+\ResidentFlash\Tools\ResInfo.exe		;Resource info
+</pre>
+<br />
+<p>
+A fenti kofigurációs állomány (feltéve, hogy a benne megadott összes exe kiterjesztésű állomány létezik)
+az alábbi menüt eredményezi:</p>
+<img class="examples" src="menu1.png"/>
+<br />
+<p>
+Az újabb eszközök (a BluePanther Diamond és Zafire valamint a Wayteq x820 és x620 egészen biztosan)
+az SD kárta tartalmát a \SDMMC könyvtár alá csatolja a kártya behelyezésekor.
+Ha kiegészítjük a fenti konfigurációs fajlt a következőképpen:</p>
+<pre class="examples">
+\SDMMC\PNAMenu.ini
+\ResidentFlash\iGO8.3.4.102680\iGO8.exe		;iGO8.3.4.102680 (belső)
+\ResidentFlash\iGO8.3.2.96054\iGO8.exe		;iGO8.3.2.96054 (belső)
+\ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
+\ResidentFlash\NDrive\NDrive.exe		;NDrive demo (belső)
+\ResidentFlash\Nitrogen\Nitrogen.exe		;NirtogenAudio Player
+\Windows\Explorer.exe				;Windows Explorer
+\ResidentFlash\Tools\ResInfo.exe		;Resource info
+</pre>
+<br/>
+<p>
+Majd az SD kártya gyökerében létrehozzuk a PNAMenu.ini állományt az alábbi tartalommal:
+</p>
+<pre class="examples">
+\SDMMC\Drive\WindowsMobile\Drive.exe		;Sygic drive 7.71 (SD kártyáról)
+</pre>
+<br />
+<p>
+Akkor amennyiben a "Drive\WindowsMobile\Drive.exe" létezik a kártyán, az SD kártya behelyezése után a menü
+a következőre módosul:
+</p>
+<img class="examples" src="menu2.png"/>
+<br />
+<p>
+Az SD kártya menüleírójára mutató sor (\SDMMC\PNAMenu.ini) természetesen akkor is benne maradhat a fő
+konfigurációs állományban, ha az SD kártyát eltávolítjuk, ilyenkor a program egyszerűen figyelmen kívül
+hagyja a nem létező állományt.
+</p>
+<p>
+Így amennyiben több SD kártyán különböző navigációs szoftverrel rendelkezünk, elég minden SD kártyánk
+főkönyvtárában elhelyezni egy PDAMenu.ini állományt a megfelelő tartalommal, és a kártya behelyezésekor
+az adott program automatikusan be fog kerülni a menübe.
+</p>
+<h2>2. Csak haladóknak</h2>
+<h3>2.1 Színkezelés</h3>
+<p>A PNAMenu az 1.1-es verziótójától kezdve támogatja az indítógombok színének megváltoztatását.</p>
+<h4>2.1.1 Elméletileg</h4>
+<p>
+A színeket három paranccsal
+tudjuk befolyásolni, paraméterezésében azonban mindhárom színkezelő parancs megegyezik. Mindegyikük négy, szóközzel
+elválasztott 6 karakter hosszú paramétert vár, melyeket tizenhatos számrendszerben értelmez, és három byte-ra bont.
+Az első byte a kék, a második a zöld a harmadik a vörös színkomponens értékét reprezentálja.
+</p>
+<p>
+A fentiek szerint az ff0000 például egy telített kék, a 00ff00 egy telített zöld, a 0000ff pedig egy telített vörös színt
+jelöl.
+</p>
+<p>
+A négy paraméter első színhármasa a gomb alapállapotának hátérszínét, a második az alapállapot szövegének színét, a
+harmadik a kijelölt állapot háttérszínét, míg a negyedik a kijelölt állapot sövegszínét adja meg.
+<h4>2.1.2 Gyakorlatilag</h4>
+</p>
+<p>
+A három színkezelő parancs közül kezdjük a legegyszerűbbel:
+Az <b>exitcolor</b> bárhol elhelyezve a menüleíró fájlban, az exit gomb színét határozza meg. Amennyiben több 
+<b>exitcolor</b> parancs is feldolgozásra kerül (akár másik ini fájlból is) az utolsóként feldolgozott határozza meg az
+exit gomb színét. Az alábbi példa sotet piros exit gombot eredmenyez, ami kattintásra világos narancssárgára vált:
+</p>
+<pre class="examples">
+exitcolor 004e98 e8e8e8 0689ff ffffff
+</pre>
+<br />
+<p>
+A <b>color</b> parancs az őt követő összes gomb színét megváltoztatja. A <b>tempcolor</b> parancs annyiban
+különbözik tőle, hogy hatása csak a következő gombra terjed ki, utána a szín visszáll az előző értékre.
+A teljes színkezelés működése a lenti példán kitűnően megfigyelhető:
+</p>
+<pre class="examples">
+exitcolor 002098 e8e8e8 0660ff ffffff		;red/orange
+color 462c00 c8c8c8 8c5800 ffffff		;dark blue
+tempcolor 108000 d0d0d0 40c004 ffffff		;light green
+\ResidentFlash\igo8.3.4.102680\igo8.exe		;iGO8.3.4.102680 (belső)
+\ResidentFlash\igo8.3.2.96054\igo8.exe		;iGO8.3.2.96054 (belső)
+\ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
+tempcolor 904800 c8c8c8 ff8906 ffffff		;light blue
+\ResidentFlash\iGO_Amigo\amigo_pna.exe		;iGO Amigo (belső)
+\ResidentFlash\NDrive\NDrive.exe	        ;NDrive demo (belső)
+</pre>
+<img class="examples" src="colors.png" />
+<br/>
+<p>
+Mivel a színkezelő parancsol hatása nem vész el a külső leírófile feldolgozásakor, így egyszerűen meglodható például,
+hogy az SD kártyán elhelyezett menüleíró által generált indítógombok más színűek legyenek mint a fő menüleíróból generaltak
+anélkül, hogy az SD kártyáról becsatolt leíróban bármit is változtatnánk. Az SD kártya leírójéra hivatkozás előtt
+egyszerűen változtassuk meg a háttérszínt (a tmpcolor is használható ha a kártya menüleírójából származó gombok kozül az
+elsőnek más színt szeretnénk adni), majd a hivatkozás után állítsuk vissza.
+</p>
+<h3>2.2 Méginkább csak haladóknak</h3>
+<p>
+Az 1.2-es verzióval két új lehetőség érkezett a PNAMenube.
+</p>
+<h4>
+2.2.1 Almenük
+</h4>
+<p>
+Már a legelső publikus verzióban (1.0) is lehetséges volt külső menüleíró fájlok feldolgozására, az 1.2-es verziótól
+kezdve azonban ezeket a külső leírókat akár külön oldalon is megjeleníthetjük. A korábbi, beágyazott feldolgozás tovabbra
+is lehetséges, a külon oldalra helyezest a <b>submenu</b> paranccsal érhetjük el. Az almenü színei az őt indító menü végén
+érvényben lévő színekkel egyeznek meg. Az alábbi pálda az SD kártya gyökerében található PNAMenu.ini állománynak létrehoz
+a főmenüben egy "SD kártya" feliratú indítógombot, amire ha a felhasználó rábök, a \SDMMC\PNAMenu.ini állományban leírt
+menü egy új oldalon jelenik meg:
+</p>
+<pre class="examples">
+submenu \SDMMC\PNAMenu.ini			;SD kártya
+</pre>
+<br />
+<p>
+A gomb természetesen csak akkor jelenik meg, ha az állomány létezik, azaz ha van SD kártya behelyezve és a
+gyökérkönytárában ott a PNAMenu.ini állomány. Bonyolultabb példát a masik frissen érkezett parancs tárgyalása után nézünk.
+</p>
+<h4>
+2.2.2 Exit gomb szövege
+</h4>
+<p>
+Bár nem egy eget rengető újítás, de az 1.2-es veriótól kezdve az exit gomb felirata is megváltoztatható.
+A megváltoztatott szöveg a kilépésig érvényben marad, tehát az almenükben is az új szöveg lesz az exit gomb felirata
+(hacsak az almenüben újra meg nem változtatjuk azt).
+</p>
+<h4>2.2.3 Összetett példa almenükkel</h4>
+<p>
+A PNAMenu.exe az eszköz belső tárolójában, a PNAMenu könyvtárban található. Ugyan itt (\ResidentFlash\PNAMenu\) található az alábbi menüleíró PNAMenu.ini néven:
+</p>
+<pre class="examples">
+color 462c00 c8c8c8 8c5800 ffffff		;dark blue
+tempcolor 904800 c8c8c8 ff8906 ffffff		;light blue
+submenu \SDMMC\PNAMenu.ini			;SD kártya
+color 462c00 c8c8c8 8c5800 ffffff		;dark blue
+tempcolor 108000 d0d0d0 40c004 ffffff		;light green
+\ResidentFlash\igo8.3.4.102680\igo8.exe		;iGO8.3.4.102680 (belső)
+\ResidentFlash\igo8.3.2.96054\igo8.exe		;iGO8.3.2.96054 (belső)
+\ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
+\ResidentFlash\NDrive\NDrive.exe		;NDrive demo (belső)
+color 404040 c8c8c8 808080 ffffff
+submenu \ResidentFlash\PNAMenu\Tools.ini	;Eszközök
+exitcolor 002098 e8e8e8 0660ff ffffff		;red/orange
+exitname Bezár
+color 462c00 c8c8c8 8c5800 ffffff		;az almenü színe, amennyiben nincs szín megadva az almenü leírójában
+</pre>
+<br />
+<p>
+Ha a PNAMenu.ini mellett található egy Tools.ini nevú file, valamint van SD kártya az eszközben aminek a
+gyökérkönyvtárában található egy PNAMenu.ini nevű állomány, a főmenü a következőképpen fog kinézni:
+</p>
+<img class="examples" src="advmenu.png" />
+<br />
+<p>
+Az "SD kártya" gombra bökve egy új menü oldal jelenik meg, aminek a tartalmát az SD kártya gyökerében (\SDMMC\)
+elhelyezett PNAMenu.ini állomány írja le:
+</p>
+<pre class="examples">
+color 462c00 c8c8c8 8c5800 ffffff
+tempcolor 984e00 c8c8c8 ff8906 ffffff
+\SDMMC\Igo_Amigo\amigo_pna.exe		;iGO Amigo (SD kártyáról)
+tempcolor 209800 d0d0d0 48ff06 ffffff
+\SDMMC\igo8.3.4.102680\igo8.exe		;iGO8.3.4.102680 (SD kártyáról)
+\SDMMC\Drive\WindowsMobile\Drive.exe    ;Sygic drive 7.71 (SD kártyáról)
+</pre>
+<img class="examples" src="submenu1.png" />
+<br />
+<p>
+Az "Eszközök" gomb megnyomására felbukkanó menü tartlamáért pedig a PNAMenu.exe-vel megegyezo konyvtarban
+(\ResidentFlash\PNAMenu\) elhelyezett Tools.ini nevű file felelős:
+</p>
+<pre class="examples">
+color 404040 c8c8c8 808080 ffffff
+\ResidentFlash\Nitrogen\Nitrogen.exe		;Nirtogen Zenelejátszó
+\Windows\Explorer.exe				;Windows CE felület
+\ResidentFlash\Tools\ResInfo.exe		;Erőforrás információk
+</pre>
+<img class="examples" src="submenu2.png" />
+<h2>3. Lárifári</h2>
+<p>
+© 2009, Bódy Attila - A program szabadon használható, terjeszthető és módosítható a <a href=gplv3.txt>GPL v3</a> feltételei szerint.
+Hibajelentések, nyavajgások, a spambait[pont]hu[kukac]gmail[pont]com címre küldendők
+</p>
+<br />
+</body></html>

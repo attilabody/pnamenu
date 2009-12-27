@@ -1,0 +1,28 @@
+The nowdays more popular PNAs have a bit limited ability on select and start the navigation software. 
+The majoriy of these equipments are produced by the Chinese Yuan Feng LTD, thus their firmware is
+very similar. Unfortunately the software of the device is only designed for starting fast and simple only
+one navigation program.
+
+
+The devices I have (BluePanther Diamond and Wayteq x820) use almost the same logic
+when the user starts the navigation program:
+
+
+On x820 it is possible to set the path of the navigation application using the settings page. If there is 
+anything set here, it has absolute priority.
+
+
+If there no navigation application path has been set (or the device - e.g. BP Diamond - does not support
+this feature) The application starts described in shell.ini in the internal flash memory
+(\ResidentFlash) If \ResidentFlash\shell.ini does not exist, it will try the same with shell.ini in
+the root directory of the SD card (\SDMMC\shell.ini) and starts the program there. 
+If none of the above files exists it tries to start
+\SDMMC\MobileNavigator\MobileNavigator.exe, then if this does not exists it tries
+\ResidentFlash\MobileNavigator\MobileNavigator.exe
+
+
+However we have several way to select which navigation software to start, we have to wander through the
+setup menu - even with the Waytew x820/x620 which has the las updated software - if we would like to start
+ a different application than before or have
+to edit a file or rename some direcories if the application selector feature is missing (BP Diamond/Zafire)
+
