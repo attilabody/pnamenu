@@ -7,7 +7,7 @@
 #include <commctrl.h>
 
 #define MAX_LOADSTRING 100
-#define	_DEBUG_PNAPROXY
+//#define	_DEBUG_PNAPROXY
 
 // Global Variables:
 HINSTANCE			g_hInst;			// current instance

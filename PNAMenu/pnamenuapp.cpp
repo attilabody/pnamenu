@@ -712,6 +712,38 @@ bool pnamenuapp::processline( const wstring &cmdline, const std::wstring &commen
 
 	if( cmd == autorun )
 	{
+		std::wstring	cmdstr, params;
+		if( !getcmd( cmdstr, params, paramstr ) ) {
+			return false;
+		}
+		std::wstring	rawcmd( cmdstr );
+		size_t	lastbs( cmdstr.find_last_of( L'\\' ) );
+
+		if( lastbs != std::wstring::npos ) {
+			rawcmd.erase( 0, lastbs+1 );
+		}
+
+		BOOL succ;
+
+		if( !isprocessrunning( rawcmd.c_str() ) )
+		{
+			PROCESS_INFORMATION	pi;
+#ifndef	UNDER_CE
+			STARTUPINFO	si;
+			memset( &si, 0, sizeof( si ) );
+			si.cb = sizeof( si );
+			si.dwFlags = STARTF_USESHOWWINDOW;
+			si.wShowWindow = SW_SHOW;
+
+			succ = CreateProcess( cmdstr.c_str(), params.size() ? params.c_str() : NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ) != FALSE;
+#else	//	UNDER_CE
+			succ = CreateProcess(
+				cmdstr.c_str(),
+				params.size() ? params.c_str() : NULL,
+				NULL, NULL, FALSE, 0, NULL, NULL, NULL, &pi
+				) != FALSE;
+#endif	//	UNDER_CE
+		}
 		return true;
 	}
 

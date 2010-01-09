@@ -50,6 +50,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		succ = CreateProcess( rawbuf, NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ) != FALSE;
 #else	//	UNDER_CE
 		succ = CreateProcess( rawbuf, NULL, NULL, NULL, FALSE, 0, NULL, NULL, NULL, &pi ) != FALSE;
+		if( !succ ) {
+			CreateProcess( L"\\Windows\\Explorer.exe", NULL, NULL, NULL, FALSE, 0, NULL, NULL, NULL, &pi );
+		}
 #endif	//	UNDER_CE
 	}
 	return 0;
