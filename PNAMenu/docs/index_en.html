@@ -77,7 +77,7 @@ sets anyhing here, it has absolute priority.
 If there no navigation application path has been set (or the device - e.g. BP Diamond - does not support
 this feature) The device checks if shell.ini exists in the root of the internal flash memory (\ResidentFlash)
 then in the root of the SD card (\SDMMC). If it finds such a file it launches the application this file
-points to. If no such a file found, it ries to launch \SDMMC\MobileNavigator\MobileNavigator.exe,
+points to. If no such a file found, it tries to launch \SDMMC\MobileNavigator\MobileNavigator.exe,
 then if it still does not exists it tries \ResidentFlash\MobileNavigator\MobileNavigator.exe
 </p>
 <p>
@@ -131,8 +131,7 @@ A <a href="PNAMenu.zip">program innen</a>, a <a href="PNAMenu_src.zip">forrásk�
 </p>
 <h2>2. Például...:</h2>
 <p>ini file az exe-vel azonos könyvtárban:</p>
-<pre class="examples">
-\ResidentFlash\iGO8.3.4.102680\iGO8.exe		;iGO8.3.4.102680 (belső)
+<pre class="examples">\ResidentFlash\iGO8.3.4.102680\iGO8.exe		;iGO8.3.4.102680 (belső)
 \ResidentFlash\iGO8.3.2.96054\iGO8.exe		;iGO8.3.2.96054 (belső)
 \ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
 \ResidentFlash\NDrive\NDrive.exe		;NDrive demo (belső)
@@ -150,8 +149,7 @@ az alábbi menüt eredményezi:</p>
 Az újabb eszközök (a BluePanther Diamond és Zafire valamint a Wayteq x820 és x620 egészen biztosan)
 az SD kárta tartalmát a \SDMMC könyvtár alá csatolja a kártya behelyezésekor.
 Ha kiegészítjük a fenti konfigurációs fajlt a következőképpen:</p>
-<pre class="examples">
-\SDMMC\PNAMenu.ini
+<pre class="examples">\SDMMC\PNAMenu.ini
 \ResidentFlash\iGO8.3.4.102680\iGO8.exe		;iGO8.3.4.102680 (belső)
 \ResidentFlash\iGO8.3.2.96054\iGO8.exe		;iGO8.3.2.96054 (belső)
 \ResidentFlash\iGO8.3.2.93112\iGO8.exe		;iGO8.3.2.93112 (belső)
@@ -164,8 +162,7 @@ Ha kiegészítjük a fenti konfigurációs fajlt a következőképpen:</p>
 <p>
 Majd az SD kártya gyökerében létrehozzuk a PNAMenu.ini állományt az alábbi tartalommal:
 </p>
-<pre class="examples">
-\SDMMC\Drive\WindowsMobile\Drive.exe		;Sygic drive 7.71 (SD kártyáról)
+<pre class="examples">\SDMMC\Drive\WindowsMobile\Drive.exe		;Sygic drive 7.71 (SD kártyáról)
 </pre>
 <br />
 <p>
