@@ -25,16 +25,15 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
                    int       nCmdShow)
 {
 #if defined( _DEBUG ) && defined( _DEBUG_PNAPROXY )
-	//give a chance for the debugger to attach while in the loop
+//give a chance for the debugger to attach while in the loop
 //	DWORD	ast( GetTickCount() );
 //	DWORD	st;
-	//this loop will exit only if we spent some serious amount
-	//of time in the loop (breakpoint)
-	//if it does not happen in a minute, continue
+	//this loop will exit only if we spent more than 600ms in the loop (breakpoint)
+	//or timeout occurs (60 seconds)
 //	do {
 //		st = GetTickCount();
 //		Sleep( 100 );
-//	} while( GetTickCount() - st < 1000 && GetTickCount() - ast < 60000 );
+//	} while( GetTickCount() - st < 600 && GetTickCount() - ast < 60000 );
 
 	MessageBox( NULL, L"Attach to the process with a debugger now!", L"Debug wait", MB_OK );
 
