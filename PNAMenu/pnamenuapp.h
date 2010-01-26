@@ -66,11 +66,6 @@ protected:
 	bool isprocessrunning( const wchar_t *procname );
 
 	void loaddlls( const wchar_t *basedir );
-	void towide( std::wstring &dst, const std::string &src );
-	void tombcs( std::string &dst, const std::wstring &src );
-	void tombcs( std::string &dst, const wchar_t *src );
-	bool getcmd( std::wstring &cmd, std::wstring &params, const std::wstring &cmdline );
-	bool getparams( std::vector< std::wstring > &params, const std::wstring &cmdline );
 	bool processline( const std::wstring &cmdline, const std::wstring &comment );
 
 	void	savestate();

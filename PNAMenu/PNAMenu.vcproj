@@ -501,6 +501,10 @@
 				RelativePath=".\txtfile.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\utility.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -541,6 +545,10 @@
 			</File>
 			<File
 				RelativePath=".\txtfile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\utility.h"
 				>
 			</File>
 		</Filter>
